@@ -1,0 +1,59 @@
+<html>
+<head>
+	<title>Gif-Images</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body style="background-color:lightgrey;">
+	<div class="container">
+		<h2>Giphy Image Generator<img src="https://image.flaticon.com/icons/svg/1946/1946402.svg" width="25" height="25"></h2>
+		<p><span style="color:red;">*</span><span style="color:black;"><b>Onfocusout:When you leave the input field the function will be triggered and the event is occured.</span></b></p>
+		<p><span style="color:red;">*</span><span style="color:black;"><b>Enter key is disabled</b></span></p>	
+		    <form>
+		    	<table>
+		    		<tr>
+		    			<td>Giphy-Search:</td>
+		    			<td><input type="text" id="searchKey" placeholder="Serach Gif images" onfocusout="func()" ></td>
+		    		</tr>
+		    	</table>
+				
+			</form>
+		<div id="results" class="results">
+		</div>
+	</div>
+	<script>
+			window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+		function func()
+		{
+			this.q=document.getElementById("searchKey").value;
+			const limit=1000;
+		    const api="XnZ7ki5X31RyVr3dLrAtGGJYoChwHf2M"
+		    var path=`https://api.giphy.com/v1/gifs/search?api_key=${api}&q=${q}&limit=${limit}`
+            fetch(path).then(function(res){
+			return res.json()
+		}).then(function(json){
+			console.log(json.data[0].images.fixed_width.url)
+			var result=document.getElementById("results")
+			var out=" "
+			
+			json.data.forEach(function(obj){
+				console.log(obj)
+				const url=obj.images.fixed_width.url
+				const width=obj.images.fixed_width.width
+				const height=obj.images.fixed_width.height
+				const title=obj.title
+				out+=`<img id="img" src="${url}"width="${width}"height="${height}"alt="${title}">`
+			})
+			
+			result.innerHTML=out
+			}).catch(function(err){
+				console.log(err.message)
+		});
+		}
+	</script>
+</body>
+</html>
